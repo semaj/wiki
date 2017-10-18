@@ -1,7 +1,7 @@
 # Polyglot: Automatic Extraction of Protocol Message Format Using Dynamic Binary Analysis
 
 ## Motivation
-Protocol reverse engineering is the process of extracting the application-level protocol used by an implementation **without access to the protocol specification**.  
+Protocol reverse engineering is the process of extracting the application-level protocol used by an implementation **without access to the protocol specification**. Polyglot only requires access to the [[Program Binary]].
 Many protocols in use are closed source and it is thus to analyze and reason about them for applications such as fingerprint generation, intrusion detection, and vulnerability detection. For open source protocols, often implementations do not adhere correctly to the specification.  
 We'd like an automatic system for performing this verification, since protocol specifications and their implementations change often. Polyglot extracts the following information using Panorama. 
 
@@ -52,21 +52,3 @@ Polyglot does not require the comparison of multiple messages: it can extract ke
   * Could you perhaps apply Machine Learning to this to improve it?
   * 4.1:  In addition, we mark the smallest position in the destination address as the end of target field. For example, in Figure 3 if the instruction is accessing positions 18-20, and the address of the smallest po- sition (i.e., 18) was calculated using taint data coming from positions 12-13, then we mark position 12 as the start of a direction field with length 2, and position 18 as the end of the target field. >> If the direction field is length 10 (0-3) and 3 + 10 =13, then 4-12 indicate the value that the direction field is pointing to. Pointer + 10 will be used to "skip" past the last value. If 10 includes a tainted value and a constant, the program might be skipping a fixed length field and that will (unknowingly) be included in the variable length field picked up by the analyzer.
   * They don't really discuss how they handle scopes in separator discovery.
-
-# Decompilers
-
-## Terms and Definitions
-* **Dynamic Linking** - when examining a binary, the symbol is unmapped. The binary expects to know where a symbol maps once the loader "links" a library at runtime. This means the library must be loaded into memory by the loader, and can be compiled independently of the target application.
-* **Decompiler** - takes machine binary code and tries to translate it into high-level source code
-* **ptrace** - Allows one process to pause, resume, and inspect another process. `ptrace` can pause child before syscall, pause child after single instruction during single-step mode. 
-* **Debugging symbols** - metadata in a binary which refers to the higher-level source. DWARF format for ELF binaries. Can increase the size of binaries *significantly*.
-
-## Overview
-The raw binary application (when not compiled with debugging symbols, usually) is fed into the following process:
-1. Disassembly : dumping the assembly instructions
-1. Idiom translation : Find sequences of instructions that don't make sense at first, but used by compilers to performed well-known actions. 
-  * For example, `xor %eax %eax` is often used to clear eax, and its shorter (bytes-wise) than a `mov`.
-1. Type extraction : Recover high level types. For instance, we know you don't perform `and`s on floats.
-1. Dataflow analysis : Constructs "basic blocks", which are sequences of instructions without jumps. Tries to translate them to higher-level code. 
-1. Control flow analysis : Analyze branches to try to reconstruct `if else` statements. Backwards unconditional jumps usually evidence of a loop.
-
