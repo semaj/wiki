@@ -1,7 +1,7 @@
 # Polyglot: Automatic Extraction of Protocol Message Format Using Dynamic Binary Analysis
 
 ## Motivation
-Protocol reverse engineering is the process of extracting the application-level protocol used by an implementation **without access to the protocol specification**. Polyglot only requires access to the [[Program Binary]].
+Protocol reverse engineering is the process of extracting the application-level protocol used by an implementation **without access to the protocol specification**. Polyglot only requires access to the [[program binary|Program Binaries]].
 Many protocols in use are closed source and it is thus to analyze and reason about them for applications such as fingerprint generation, intrusion detection, and vulnerability detection. For open source protocols, often implementations do not adhere correctly to the specification.  
 We'd like an automatic system for performing this verification, since protocol specifications and their implementations change often. Polyglot extracts the following information using Panorama. 
 
