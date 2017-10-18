@@ -19,8 +19,10 @@ We'd like an automatic system for performing this verification, since protocol s
 
 ### Goals
 The proposed system uses dynamic binary analysis to extract only the **protocol message format**. The system does not require source code *or debugging information about the binary*. Given a number of messages received by a program binary implementation of a protocol, to individually extract the message format of each of those messages. **Taint information can include the offsets in the memory buffer referred to by the register / data, and also the type of data referred to (field value, direction field).**
+
 ### Challenges
 The main problem is finding field boundaries in the message, since messages can have fixed and variable length fields. How do we find the correct length for a fixed-length field, and how do we dynamically find direction fields / separators for variable-length fields? How do we find the keywords in each field? If the field is floating, we must analyze multiple messages. But usually we can just analyze one. 
+
 ### Solution
 \includegraphics[width=\textwidth]{polyglot-system}
 The *execution monitor* takes the binary and data as input and produces a trace of all instructions performed by program. It uses **dynamic taint analysis** to taint data received from the network. For example if a string of characters represents a GET request and the method (GET) is moved to EAX, EAX is tainted with 0-3 (the positions in the string). 
@@ -52,6 +54,7 @@ Polyglot does not require the comparison of multiple messages: it can extract ke
   * They don't really discuss how they handle scopes in separator discovery.
 
 # Decompilers
+
 ## Terms and Definitions
 * **Dynamic Linking** - when examining a binary, the symbol is unmapped. The binary expects to know where a symbol maps once the loader "links" a library at runtime. This means the library must be loaded into memory by the loader, and can be compiled independently of the target application.
 * **Decompiler** - takes machine binary code and tries to translate it into high-level source code
