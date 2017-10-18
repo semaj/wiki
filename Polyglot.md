@@ -1,4 +1,5 @@
 # Polyglot: Automatic Extraction of Protocol Message Format Using Dynamic Binary Analysis
+
 ## Motivation
 Protocol reverse engineering is the process of extracting the application-level protocol used by an implementation **without access to the protocol specification**.  
 Many protocols in use are closed source and it is thus to analyze and reason about them for applications such as fingerprint generation, intrusion detection, and vulnerability detection. For open source protocols, often implementations do not adhere correctly to the specification.  
@@ -15,6 +16,7 @@ We'd like an automatic system for performing this verification, since protocol s
   * **True comparison:** An equality comparison rather than something fancy like a subtraction or XOR comparison.
 
 ## Overview
+
 ### Goals
 The proposed system uses dynamic binary analysis to extract only the **protocol message format**. The system does not require source code *or debugging information about the binary*. Given a number of messages received by a program binary implementation of a protocol, to individually extract the message format of each of those messages. **Taint information can include the offsets in the memory buffer referred to by the register / data, and also the type of data referred to (field value, direction field).**
 ### Challenges
@@ -40,7 +42,9 @@ Note the binary might compare against space and tab (for HTTP this are both vali
 Polyglot finds the correct length for multi-byte fixed-length fields. Consider each byte received from the network as independent. For each instruction that deals with tainted data, extract a list of positions from which the tainted data came from. Check if these bytes are a direction field. If not, create a fixed field. If later we find a sequence of consecutive tainted positions that overlaps with a  previously defined field, extend the previously defined field to encompass the newly found bytes. 
 * **Extracting protocol keywords**
 Polyglot does not require the comparison of multiple messages: it can extract keywords given one message. Extracts keywords that are present within the given exchange and supported by the implementation. Create the same tables mentioned in the separators section. Explore each position in the tokens-at-positions hash. For each position, if there's a true comparison made between the character at this position and another character, concatenate the non-tainted token to the current keyword. If no true comparison was performed, store the current keyword and start a new one at that position. Also break if we find a separator. 
+
 ## Evaluation
+
 ## Questions and Issues
   * What happens when the protocol uses TLS or some other encryption mechanism?
   * Could you perhaps apply Machine Learning to this to improve it?
