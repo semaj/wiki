@@ -1,17 +1,22 @@
 # Advanced Metamorphic Techniques in Computer Viruses
+
 ## Motivation
-1. The first antivirus software simply scanned for binary signatures.
+1. The first antivirus software simply scanned for binary signatures in [[malware|Malware]].
 1. Viruses were written to mutate their code and their decryption method upon replication.
 1. Antivirus software allowed viruses to decrypt themselves and then scanned for signatures.
 1. This lead to metamorphic viruses, which mutate their code after decryption.
 
+These viruses often create new pages which contain the decrypted version of code, since they can't write to NX bits.
+
 This article describes both simple and complex metamorphic techniques.
+
 ## Terms and Definitions
-* **Polymorphic virus** - a virus which mutates its code and/or decryption method upon replication.
-* **Metamorphic virus** - a virus which mutates its code in its decrypted form (after decryption). More specifically, on each replication the code to be executed completely mutates, without altering its functionality. Thus, encryption is not anymore necessary and, when used, the decryption method as well as the decrypted code of the virus are different for each new generation.
+* **Polymorphic virus** - a virus which changes its encryption key upon duplication such that the encrypted code is different for every duplication.
+* **Metamorphic virus** - a virus which changes its decryption key but also the decrypting portion of the code upon duplication such that its difficult to detect the virus via decryption signature.
 * **Form analysis** - A identifying a virus by a sequence of (not necessarily consecutive) bytes whose detection inside a program indicates possible infection.
-* **Detection by code emulation** - static analysis was unreliable, so the binary is run in a sandboxed environment with limited instructions. Periodically the affected memory was analysed to detect decrypted viral code.
+* **Detection by code emulation** - static analysis was unreliable, so the binary is run in a sandboxed environment with limited instructions. Periodically the affected memory was analyzed to detect decrypted viral code.
 * **Entry Point Obscuring** - Running the virus code at the middle or end of the host binary execution rather than the start.
+
 ## Overview
 1. Viruses commonly appended themselves to the end of executable files, then changed the entry point to point at the virus code. 
 1. Form analysis solved this, but virus detection is undecidable.
@@ -22,7 +27,7 @@ This article describes both simple and complex metamorphic techniques.
 1. Anti-emulation techniques:
   1. Using unusual instructions
   1. Inserting dead code that will loop for a long time
-  1. Random cancelling of decryption (running the virus randomly)
+  1. Random canceling of decryption (running the virus randomly)
   1. Entry Point Obscuring
   1. Using several encryption layers.
   1. Decrypting and running the code chunk-by-chunk.
@@ -31,7 +36,6 @@ This article describes both simple and complex metamorphic techniques.
 1. Viruses start shipping with their own compilers (Tiny Mutation Compiler). On execution, it decrypts itself, inserts dead code, shuffles things, and recompiles everything. 
 
 ### MetaPHOR
-
 The first ever polymorphic, metamorphic Linux virus. Most viruses encrypt themselves using keys either stored within the program, keys derived from the program itself or the environment, or no key at all (the decryption must be brute forced). 
 
 * MetaPHOR used a random key and normal XOR/ADD/SUB encryption.
@@ -40,6 +44,7 @@ The first ever polymorphic, metamorphic Linux virus. Most viruses encrypt themse
 
 #### Branching 
 Innocuous programs will usually sequentially test several conditions, and depending on the result finally branch on distinct paths. MetaPHOR creates several random tests until a desired recursivity level that will define an execution tree with leaves containing *distinct* but *equivalent* decryption code. Rather than looping (which would set off heuristics) it jumps to a previous node in the tree, and executes. Since all leaves do the same thing, it will decrypt the program.
+
 #### PRIDE
 Heuristics will often check for the following routine:
 1. Address of buffer inside data section
@@ -65,4 +70,4 @@ MetaPHOR contains its own psuedo-random number generator.
 ### Detection
 * The viral code's encryption can be identified by a statistical analysis of the code. You can compare "entropy profiles". Antivirus will consider suspicious any application with lots of encrypted data...
 * Antivirus can monitor memory for the compression signatures.
-* Behavior analysis
+* Behavior analysis: load malware in a sanbox and look for suspicious patterns (writing to memory page and jumping into a new page)

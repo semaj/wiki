@@ -7,10 +7,10 @@ Existing Android permissions are very course-grained: can this application acces
 * **Source** - a sensor or other piece of the phone which contains and can emit sensitive data, from which we want to track
 * **Sink** - Exposes sensitive data. Usually the network.
 * **Register-based language** - a language which reasons using actual registers rather than a stack and stack operations
-* **Native methods** - usually C/C++ methods which expose primitive functionality within the Linux kernal. Can also reference Java internals. Android has VM methods and JNI (Java Native Interface) methods.
+* **Native methods** - usually C/C++ methods which expose primitive functionality within the Linux kernel. Can also reference Java internals. Android has VM methods and JNI (Java Native Interface) methods.
 * **Binder** - the interface for IPC (inter-process communication)
 ## Overview
-TaintDroid runs on Android, which uses the Dalvik VM interpreter. Its language, DEX, is a **register-based language** in which registers *loosely* correspond to local variables in the java method. Android programs can also execute **native methods** which expose Linux functionality.
+TaintDroid runs on Android, which uses the Dalvik VM interpreter. Its language, DEX, is a **register-based language** in which registers *loosely* correspond to local variables in the Java method. Android programs can also execute **native methods** which expose Linux functionality.
 
 TaintDroid instruments the Dalvik VM interpreter. TD maintains a 32-bit label which indicates the taint status of a given object. `[0, 0, 1, ... 0]` indicates that the 3rd bit (whatever that represents) is tainted.
 
@@ -61,7 +61,7 @@ Android (post 2013) applications are downloaded in Dalvik bytecode form, install
 Panorama tracks Information Flow Control at the x86 level. It runs applications within QEMU, an x86 emulator. 
 * To assign taint, label every register and every byte of memory that is touched
 * Define taint sources as HDD, keyboard, network
-* Looks at every CPU instruction propogating taint across registers and memory
+* Looks at every CPU instruction propagating taint across registers and memory
 * Whenever tainted pointer is *dereferenced*, result is also tainted
 
 #### Taint Explosion
