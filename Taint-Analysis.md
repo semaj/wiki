@@ -2,6 +2,7 @@
 
 ## Panorama
 Panorama tracks Information Flow Control at the x86 level. It runs applications within QEMU, an x86 emulator. 
+
 * To assign taint, label every register and every byte of memory that is touched
 * Define taint sources as HDD, keyboard, network
 * Looks at every CPU instruction propagating taint across registers and memory
