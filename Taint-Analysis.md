@@ -77,6 +77,7 @@ How does TD assign taint for **native methods**, since they execute outside of t
 * Authors went through every native method and assigned unique taint-assignment rules for each method.
 
 There are five types of data that require taint-tracking:
+
 1. Local variables in methods
 1. Method arguments
 1. Object instance fields
