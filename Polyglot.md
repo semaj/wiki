@@ -10,7 +10,6 @@ We'd like an automatic system for performing this verification, since protocol s
   * **Direction fields:** Fields used to mark the boundary of variable-length fields. This includes length fields (how long the following field is) and pointer fields (where this field starts relative to some other position) and counter fields (the position of an element in a list of items).
   * **Separator:** 1) A constant value 2) A scope, which contains a list of position sequences in the application data where the separator is used. Since a separator could be used to separate fields themselves or values within fields...
   * **Protocol Hierarchy:** Protocols are composed of *sessions* which are composed of a sequence of *messages* which are composed of a sequence of *fields*. 
-      \includegraphics[scale=0.5]{polyglot-field-formats}
   * **Format attributes:** Field Length indicates whether it's Fixed or Variable, and the corresponding size. Field Boundary indicates the type and the value (Fixed means a constant boundary). Field keywords are words that (I think) appear in either the key or the value of the field, especially since not all fields are key-value pairs. 
   * **Floating field:** A field that may be ordered differently depending on the specific message.
   * **True comparison:** An equality comparison rather than something fancy like a subtraction or XOR comparison.
@@ -24,7 +23,6 @@ The proposed system uses dynamic binary analysis to extract only the **protocol 
 The main problem is finding field boundaries in the message, since messages can have fixed and variable length fields. How do we find the correct length for a fixed-length field, and how do we dynamically find direction fields / separators for variable-length fields? How do we find the keywords in each field? If the field is floating, we must analyze multiple messages. But usually we can just analyze one. 
 
 ### Solution
-\includegraphics[width=\textwidth]{polyglot-system}
 The *execution monitor* takes the binary and data as input and produces a trace of all instructions performed by program. It uses **dynamic taint analysis** to taint data received from the network. For example if a string of characters represents a GET request and the method (GET) is moved to EAX, EAX is tainted with 0-3 (the positions in the string). 
 % 
 
