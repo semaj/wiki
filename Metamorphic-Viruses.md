@@ -1,4 +1,4 @@
-# Advanced Metamorphic Techniques in Computer Viruses
+# [[Advanced Metamorphic Techniques in Computer Viruses|pdfs/metamorphic-viruses.pdf]]
 
 ## Motivation
 1. The first antivirus software simply scanned for binary signatures in [[malware|Malware]].
@@ -25,13 +25,13 @@ This article describes both simple and complex metamorphic techniques.
 1. Viruses like *CHAMELEON* emerged, which mutated the code of their decryption method. The *WHALE* virus emerged, which mutated its *mutation function*. Polymorphic *engines* then appeared, which could be linked to a virus to produce polymorphic variants. After that, virus creation toolkits appeared.
 1. Kaspersky worked out **detection by code emulation**. It's quite CPU intensive.
 1. Anti-emulation techniques:
-  1. Using unusual instructions
-  1. Inserting dead code that will loop for a long time
-  1. Random canceling of decryption (running the virus randomly)
-  1. Entry Point Obscuring
-  1. Using several encryption layers.
-  1. Decrypting and running the code chunk-by-chunk.
-  1. Metamorphic techniques including transforming the encrypted code.
+    * Using unusual instructions
+    * Inserting dead code that will loop for a long time
+    * Random canceling of decryption (running the virus randomly)
+    * Entry Point Obscuring
+    * Using several encryption layers.
+    * Decrypting and running the code chunk-by-chunk.
+    * Metamorphic techniques including transforming the encrypted code.
 1. Virus detection is determined to be NP-complete.
 1. Viruses start shipping with their own compilers (Tiny Mutation Compiler). On execution, it decrypts itself, inserts dead code, shuffles things, and recompiles everything. 
 
