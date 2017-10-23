@@ -44,7 +44,7 @@ Sender and receiver share two parameters:
 If `e` is some agreed upon time, then 
 
 $$
-G_i = G - e if b_i = 0
+G_i = G - e if b_i = 0 \\
 G_i = G + e if b_i = 1
 $$
 
@@ -55,7 +55,7 @@ If `e` is large enough, encoded messages will be preserved because most switches
 To decode:
 
 $$
-b_i^p = 1 if G_i >= G
+b_i^p = 1 if G_i >= G \\
 b_i^p = 0 if G_i < G
 $$
 
