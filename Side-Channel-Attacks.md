@@ -44,10 +44,10 @@ Sender and receiver share two parameters:
 If `e` is some agreed upon time, then 
 
 $$
-G_i = G - e if b_i = 0
+G_i = G - e, if b_i = 0
 $$
 $$
-G_i = G + e if b_i = 1
+G_i = G + e, if b_i = 1
 $$
 
 Where $G_i$ is the *i*th interpacket gap between packet *i* and packet *i + 1*. When G+i is less than the min IPG (or 12 `/I/`s) it is set to 12.
@@ -57,10 +57,10 @@ If `e` is large enough, encoded messages will be preserved because most switches
 To decode:
 
 $$
-b_i^p = 1 if G_i >= G
+b_i^p = 1, if G_i >= G
 $$
 $$
-b_i^p = 0 if G_i < G
+b_i^p = 0, if G_i < G
 $$
 
 $b_i^p$ prime may not be equal to $b_i$ due to noise.
