@@ -6,7 +6,7 @@
 * **Storage channels** - the sender modulates the value of a storage location
 * **Timing channels** - the either intentional or unintentional leakage of information via the time given operations take
 * **Side-Channel Attack** - when a system inadvertantly leaks information via covert channel, and an attacker can determine something about the execution of the system
-* **Network covert channels** - send hidden messages over legitimate packets by modifiying the delay in between messages or headers in the messages. The sender has secret information that she tries to send to a receiver over the network, nicluding a network interface (L1-2, kernel network stack (L3-4) and application (L5). 
+* **Network covert channels** - send hidden messages over legitimate packets by modifiying the delay in between messages or headers in the messages. The sender has secret information that she tries to send to a receiver over the network, including a network interface (L1-2), kernel network stack (L3-4), and application (L5). 
 * **Active adversary** - employs network applications like network jammers to reduce the possibility of covert channels
 * **Passive adversary** - monitors packet information to *detect* covert channels
 * **Supply chain attack**  - switches and routers between the sender and receiver are compromised and cabaple of forwarding hidden messages.
@@ -23,6 +23,7 @@
 
 ### Web Pages
 For example, given a website that includes a "forgot my password" link: when the backend server receives an HTTP request from the "forgot my password" page, let's assume it:
+
 1. Looks up the email given
 1. If the address is valid, the server generates a password recovery email and sends it to the address
 1. Regardless, it sends a responds to the "forgot my password" page/client.
@@ -37,7 +38,7 @@ Defenses:
 ### TENEX OS
 The TENEX operating system required a process to provide a password string to system calls involving file access. It checked the password like so (assume password and password attempt are the same length for simplicity)
 
-```C
+```
 for (int i = 0; i <= strlen(pwGuess); i++) {
   if (pwGuess[i] != pwReal[i]) {
     return 0;
