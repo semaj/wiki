@@ -143,3 +143,5 @@ Suppose Bob wants to run a Hidden Service.
 He picks some onion routers to act as "rendevouz points". He signs a statement with his private/public keypair that states that these ORs are his rendevouz points. He distributes this statement out-of-band.
 
 He has his webserver build a Tor circuits to the rendevouz points. In order to connect, Alice builds a circuit to a RP. Then builds a stream over that circuit and encrypts her half of a DH exchange using Bob's public key. Send the HELLO message to the RP. Ask the RP to forward it to Bob's service. Bob sends his half to the RP, who then connects Alice's circuit and Bob's circuit and forwards Bob's message to Alice.
+
+
