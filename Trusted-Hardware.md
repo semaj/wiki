@@ -145,4 +145,3 @@ To enter the enclave code, untrusted host invokes the `EENTER` instruction.
 * Server sends certificate, ($g^client mod p, g^server mod p, hash(initialEnclaveState)$)signed by SGX private key
 * Client sends some secret data encrypted by DH key
 * Server sends back result of computation encrypted by DH key
-* 

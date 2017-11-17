@@ -1,5 +1,7 @@
 # Bitlocker: AES-CBC + Elephant Diffuser
 
+See [[Ransomware]].
+
 ## Motivation & Goals
 An estimated 1-2% of laptops are lost each year. Often the data on these laptops is more valuable than the laptops themselves. Microsoft wanted to implement a solution into the Windows OS that would enable encryption of the disk without requiring too much human intervention (no passwords or physical keys). 
 
@@ -30,10 +32,23 @@ Bitlocker uses the [[TPM|Trusted-Hardware]] on the laptop. The Bitlocker encrypt
 * It protects the confidentiality of the plaintext
 * It is faster than 40 clock cycles/byte read from the HD
 * It has been validated by public scrutiny
-* The attacker cannot control or predict any aspect of the plaintext changes if he modifies or replaces the ciphertext of a sector. **We don't want the attacker to be able to just switch certain sectors**
+* The attacker cannot control or predict any aspect of the plaintext changes if he modifies or replaces the ciphertext of a sector. **We don't want the attacker to be able to just switch certain sectors. We stop this by using a different IV for each sector, dependent upon the sector number**
 
 ### Execution
-Bitlocker uses AES in CBC mode. This is a block cipher and operates on the given sectors. Unfortunately, AES-CBC suffers from poor *diffusion* in the decryption (each bit in the ciphertext should depend on several parts of the key). If the attacker introduces a change in the ciphertext block *i*, the plaintext block *i* is randomized but plaintext block *i+1* is changed according to the original change. In other words, the attacker can flip arbitrary bits in one block at the cost of randomizing another. 
+Bitlocker uses [[AES in CBC mode|Encryption]]. This is a block cipher and operates on the given sectors. Unfortunately, AES-CBC suffers from poor *diffusion* in the decryption (each bit in the ciphertext should depend on several parts of the key). If the attacker introduces a change in the ciphertext block *i*, the plaintext block *i* is randomized but plaintext block *i+1* is changed according to the original change. In other words, the attacker can flip arbitrary bits in one block at the cost of randomizing another. 
+
+Imagine `Pi` and `Ci` are just one bit wide. 
+
+```
+Pi = Dk(Ci) xor C[i - 1]
+```
+
+If `Pi` is 0, then `Dk(Ci) = 0 && C[i - 1] = 0` or `Dk(Ci) = 1 && C[i - 1] = 1`.
+If `Pi` is 1, then `Dk(Ci) = 1 && C[i - 1] = 0` or `Dk(Ci) = 0 && C[i - 1] = 1`.
+
+Attacker can flip `C[i - 1]`, match up the bit of `Dk(Ci)` and predict the next plaintext block.
+
+The problem: two installations of Windows on two different machines that have the same hardware configuration. The location and contents of DLLs, config files, etc is probably the same on both machines. Attacker can *know* the location and the contents of sensitive executables and files. If the attacker can steal your encrypted disk, the attacker can launch the bit-flip attack mentioned above with precision. He can look at the attacker's windows install, find a file, corrupt something that doesn't matter in order to change sensitive config files. 
 
 In order to mitigate this, Bitlocker adds *diffuser* to the plaintext side. It is proven (?) to be just as secure as AES-CBC, though diffuser is an unproven algorithm...
 
@@ -53,6 +68,30 @@ Sector key:
 K[s] = AESEncrypt(SectorKey, e(s)) ++ AESEncrypt(SectorKey, e'(s))
 ```
 `e'` is the same as `e` except the last byte of the result has the value 128. The Sector key is repeated as many times as necessary to get a key size of the block, and the result is xorred into the plaintext.
+
+### Diffusers
+Preventing the attacker from launching a bit-flip attack with precision.
+
+Before we encrypt sector using AES-CBC, we are going to deterministically scramble the bits in a reversible way and similarly, after we decrypt a sector using AES-CBC, we are going to unscramble the bits.
+
+Simple "encryption" (scrambling) diffuser:
+
+```c
+for (i = (numBlocks * cycles) - 1, i >= 0, i--) {
+  d[i % numBlocks] -= d[(i + 2) % numBlocks] // all of this arithmetic is mod 2^32
+}
+```
+Simple "decryption" (unscrambling) diffuser:
+
+```c
+for (i = 0, i <= (numBlocks * cycles) - 1, i++) {
+  d[i % numBlocks] += d[(i + 2) % numBlocks] // all of this arithmetic is mod 2^32
+}
+```
+
+**They no longer use diffusers. Why?**
+
+If you look at commodity CPUs made by Intel and AMD, there are now native AES instructions. So why do diffusion when it's the only thing forcing you to move into software! SSDs also have much higher I/O bandwidth. 
 
 # Defeating Encrypted and Deniable File Systems
 
@@ -97,4 +136,5 @@ All of the following examples share the following traits: the information is lea
 * A file system filter that disallows a process any write access to a non-hidden volume once that process reads information from a hidden volume. This would break many applications, but that may be okay. This also doesn't stop leakage over the network, etc.
 * A TrueCrypt bootloader could boot into two modes: deniable and non-deniable, keeping these file systems isolated.
 
+OS: extend(10, hash(executable binary)
 Note that many of these problems apply to encrypted file systems as well, since applications cache unencrypted versions of these files.
