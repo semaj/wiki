@@ -101,4 +101,6 @@ The developer specifies which columns in the SQL schema contain sensitive data, 
 The developer also specifies rules for how to delegate privileges of one principal to other principals. 
 
 
-## Evaluation
+# Why Your Encrypted Database Is Not Secure
+
+
