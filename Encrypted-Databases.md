@@ -7,6 +7,7 @@ Databases represent a security risk for applications. Often the data is stored i
 CryptDB aims to provide application developers with a way to perform certain types of queries on encrypted data by providing modifications to database columns and user keys.
 
 ## Terms and Definitions
+
 * **DBMS** - Database Management Server, the server which runs the actual database software like MySQL or PostgreSQL
 * **UDF** - User Defined Function, a query defined by the user which will be executed multiple times, presumably.
 * **Principal** - an entity with its own key that has ownership over some subset of data
@@ -23,6 +24,7 @@ CryptDB adds a database proxy, which contains the active keys and an annotated s
 CryptDB ensures data confidentiality. It does not ensure integrity, freshness, or completeness of results.
 
 Threats:
+
 1. DBMS Server Compromise: the attacker has full access to the data stored on the DBMS server. Attacker is passive: only views queries and data.
   * CryptDB guarantees confidentiality for content, column names, and  table names. Cannot hide number of rows, types of columns, approx. size in bytes. CryptDB also reveals *classes of computation* that can be performed on various columns due to its onion encryption nature. If the application requests order checks, the proxy reveals the order of the elements in the column. 
 
@@ -31,6 +33,7 @@ Threats:
 ### Queries
 
 Processing a query looks like this:
+
 1. Application issues query. Proxy anonymizes each table, column name using secret key `MK`. Encrypts each constant in query with encryption scheme best suited for operation (see later). **Note that this means in threat 2 the table/column names are visible once queries are received.**
 1. Proxy checks to see if encryption layers on affected columns need to be updated. If so, proxy issues an update to decrypt these columns. 
 1. Proxy invokes encrypted query (the data is encrypted) on DBMS server, occasionally invoking UDFs.
