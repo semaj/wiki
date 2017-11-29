@@ -9,7 +9,7 @@ Imagine participants A and B, as well as a middleperson M.
 $$
 A -> K_m(R1, K_b(R0, msg, K_m(S1, A), K_x), B) -> M \\
 $$
-$$$
+$$
 M -> K_b(R0, msg, K_m(S1, A), K_x) -> B \\
 $$
 $$
@@ -31,10 +31,13 @@ This is the simplest case - mixnets randomly distribute traffic making it diffic
 **Diffie-Hellman Key-exchange**
 
 `g` and `p` are publicly known.
-$$$
+$$
 X -> g^x mod p -> Y
+$$
+$$
 Y -> g^y mod p -> X
-$$$
+$$
+
 Both calculate ephemeral $g^(xy)$, the key.
 
 ## Goals
