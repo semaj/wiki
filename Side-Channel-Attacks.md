@@ -31,6 +31,7 @@ For example, given a website that includes a "forgot my password" link: when the
 Since step #2 only occurs if the email exists in the database, an attacker can try various emails and depending on the time it takes for the response to occur, it can infer whether a given email exists in the system. This is a problem since many sites use email addresses as usernames.
 
 Defenses:
+
 1. Introduce a random delay: this only increases the number of samples an attacker must retrieve, since they can filter out the noise
 1. Make all operations take constant time: this increases your load time
 1. Add step 2 to a queue, rather than executing it serially: probably the best
@@ -84,13 +85,13 @@ Sender and receiver share two parameters:
 If `e` is some agreed upon time, then 
 
 $$
-G_i = G - e, if b_i = 0
+G_i = G - e, if, b_i = 0
 $$
 $$
-G_i = G + e, if b_i = 1
+G_i = G + e, if, b_i = 1
 $$
 
-Where $G_i$ is the *i*th interpacket gap between packet *i* and packet *i + 1*. When G+i is less than the min IPG (or 12 `/I/`s) it is set to 12.
+Where $G_i$ is the *i*th interpacket gap between packet *i* and packet *i + 1*. When *Gi* is less than the min IPG (or 12 `/I/`s) it is set to 12.
 
 If `e` is large enough, encoded messages will be preserved because most switches do not significantly perturb interpacket gaps.
 

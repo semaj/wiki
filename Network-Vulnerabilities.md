@@ -3,15 +3,15 @@ Let's examine some protocol-level (some implementation-level) vulnerabilites in 
 
 # Ping of Death
 
-* IP spec: max packet size is 65,535 ($2^16 - 1$) bytes (len field has 16 bits)
+* IP spec: max packet size is 65,535 ($2^(16) - 1$) bytes (len field has 16 bits)
 * IP packets cross multiple links, each of which has an MTU (Max Transmission Unit): the largest payload that the link frame can handle
 * Ethernet's MTU is 1500 bytes, so IP packets will be fragmented into packets of size 1500 bytes.
 
 ## IP Packet
 
 * Fragment offset (13 bits wide), in units of 8 bytes.
-* Max offset is 65,528 (($2^13 - 1) * 8$)
-* This means the max possible lenth of the last fragment is 7 (bytes). Because $max length - max offset = 7$.
+* Max offset is 65,528 (($2^(13) - 1) * 8$)
+* This means the max possible length of the last fragment is 7 (bytes). Because $max length - max offset = 7$.
 
 The ping of death involved sending a last fragment whose size was > 7, this caused a buffer overflow on the receiving machine. Windows `ping` allowed you to specify arbitrary packet sizes.
 
@@ -45,6 +45,7 @@ The spec says that TCP should increment this 250k times per second. Even if you 
 The client will send TCP RST packets to the server when it receives the response to the attacker's packet. The attacker can flood the client so it drops packets in its queue.
 
 Really,
+
 1. This number should not be treated as a security property
 1. You could use random numbers (and I'm pretty sure that's what TCP does)
 
@@ -124,10 +125,13 @@ Roles: attacker, victim NS
 Random Query IDs can help here, but they don't protect against eavesdropping.
 
 Kaminsky's attack:
+
 1. Attacker requests `random.bankofsteve.com` via the victim.
 1. Victim makes requests to root/GTLD servers.
 1. Attacker floods victim with packets guessing the QID, but rather than returning an authoritative answer it returns an NS record with glue pointing to *her own nameserver*, which she can claim is authoritative.
 1. Victim will now cache this record and use it for all `bankofsteve.com` requests.
+
+**The attacker has successfully poisoned all requests to bankofsteve.com. This would be especially deadly if performed on an ISP's NS**
 
 Query IDs are 16 bits (64k values). 
 
@@ -148,7 +152,7 @@ Randomize the source port!
 Attacker can flood the server with SYN packets and force an OOM. The defense: server cookies. We make the server-side stateless until the third packet in the handshake is received. 
 
 ```
-S = hash(secret, srcIP, srcPORT, destIP, destPORT, C, coarse timestmap)
+S = hash(secret, srcIP, srcPORT, destIP, destPORT, C, coarse timestamp)
 ```
 Server only allocates a TCP after receiving the third message and validating that the S ack is correct.
 
