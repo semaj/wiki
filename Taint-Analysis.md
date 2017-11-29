@@ -18,7 +18,7 @@ foo() uses %ebp in the standard way
 bar() uses %ebp as a general purpose register
 ```
 
-in `bar()`, `%ebp` is tainted. When `bar()` returns, the compiler resets `%ebp` for foo like ` add some_constant %ebp`. `%ebp` is still tainted upon return to `foo()`. `foo`'s local variables are tainted because they are accessed via *deferences* of offsets of `%ebp`. If the kernel state is accidentally tainted via system call, GAME OVER.
+in `bar()`, `%ebp` is tainted. When `bar()` returns, the compiler resets `%ebp` for foo like `add some_constant %ebp`. `%ebp` is still tainted upon return to `foo()`. `foo`'s local variables are tainted because they are accessed via *deferences* of offsets of `%ebp`. If the kernel state is accidentally tainted via system call, GAME OVER.
 
 ## Implicit Flows
 If `IMEI` is tainted:
@@ -55,7 +55,7 @@ Existing Android permissions are very course-grained: can this application acces
 ## Overview
 TaintDroid runs on Android, which uses the Dalvik VM interpreter. Its language, DEX, is a **register-based language** in which registers *loosely* correspond to local variables in the Java method. Android programs can also execute **native methods** which expose Linux functionality.
 
-TaintDroid instruments the Dalvik VM interpreter. TD maintains a 32-bit label which indicates the taint status of a given object. `[0, 0, 1, ... 0]` indicates that the 3rd bit (whatever that represents) is tainted.
+TaintDroid instruments the Dalvik VM interpreter. TD maintains a 32-bit label which indicates the taint status of a given object. `[0, 0, 1, ... 0]` indicates that the object is tainted. The third bit may perhaps indicate that this data came from the GPS.
 
 In:
 ```java
@@ -66,7 +66,7 @@ x = gps.getLatitude();
 In reality, this happens at the bytecode level.
 ```x86
 mov-op dst, src         # dst gets taint of src
-bin-op dist, s0, s1     # union of s0 and s1's taint
+bin-op dst, s0, s1     # union of s0 and s1's taint
 ```
 
 * TaintDroid assigns a universal (unioned) taint value to arrays to save space.

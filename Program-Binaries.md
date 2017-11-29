@@ -7,7 +7,9 @@
 * **Debugging symbols** - metadata in a binary which refers to the higher-level source. DWARF format for ELF binaries. Can increase the size of binaries *significantly*.
 
 ## Decompilation
+
 The raw binary application (when not compiled with debugging symbols, usually) is fed into the following process:
+
 1. Disassembly : dumping the assembly instructions
 1. Idiom translation : Find sequences of instructions that don't make sense at first, but used by compilers to performed well-known actions. 
   * For example, `xor %eax %eax` is often used to clear eax, and its shorter (bytes-wise) than a `mov`.
