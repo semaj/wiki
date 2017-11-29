@@ -6,18 +6,18 @@ High-latency designs for anonymous communication date to Chaum's MixNets.
 ## Mix Networks
 Imagine participants A and B, as well as a middleperson M. 
 
-$$$
+$$
 A -> K_m(R1, K_b(R0, msg, K_m(S1, A), K_x), B) -> M \\
-$$$
+$$
 $$$
 M -> K_b(R0, msg, K_m(S1, A), K_x) -> B \\
-$$$
-$$$
+$$
+$$
 B -> K_m(S1, A), K_x(S0, response) -> M \\
-$$$
-$$$
+$$
+$$
 M -> A, S1(K_x(S0, response)) -> A
-$$$
+$$
 
 This is the simplest case - mixnets randomly distribute traffic making it difficult to correlate sending and receiving.
 
