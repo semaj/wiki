@@ -3,7 +3,7 @@
 | Layer Number | Protocol Level | Data Unit | Goal | Examples |
 | ------------ | -------------- | --------- | ---- | -------- |
 | 5 | Application | Application-specific | Application-specific | HTTP, FTP |
-| | 4 | Transport | Datagram (UDP), Segment (TCP) | Overall, which application is this information for? TCP also provides reliability: it's an ordered data-stream. | TCP, UDP |
+| 4 | Transport | Datagram (UDP), Segment (TCP) | Overall, which application is this information for? TCP also provides reliability: it's an ordered data-stream. | TCP, UDP |
 | 3 | Network | Packet (IP) | How can the sender send information across multiple hops to a specific recipient? | IP (IP addresses) |
 | 2 | (Data) Link | Frame (Ethernet) | How can a sender send information across *one* hop? | Ethernet (802.3), WiFi (802.11) (MAC addresses) |
 | 1 | Physical | Bit | How are 0s and 1s encoded across a physical communication medium? | Radio, fiber, copper |

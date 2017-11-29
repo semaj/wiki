@@ -1,9 +1,9 @@
 # Side Channels & Attacks
 
 ## Terms and Definitions
-* **Side-channel** - - an unintentional communication vector which leaks information about a computation
+* **Side-channel** - an unintentional communication vector which leaks information about a computation
 * **Covert channels** - methods of sending messages through non-information-transfer systems. For example, covert channels may allow a user to send information within established network protocols, without actually using the protocol itself. **The channel itself must be hidden**. The sender and receiver are both on the same "side".
-* **Storage channels** - the sender modulates the value of a storage location
+* **Storage channels** - the sender modulates the value at a storage location
 * **Timing channels** - the either intentional or unintentional leakage of information via the time given operations take
 * **Side-Channel Attack** - when a system inadvertantly leaks information via covert channel, and an attacker can determine something about the execution of the system
 * **Network covert channels** - send hidden messages over legitimate packets by modifiying the delay in between messages or headers in the messages. The sender has secret information that she tries to send to a receiver over the network, including a network interface (L1-2), kernel network stack (L3-4), and application (L5). 
