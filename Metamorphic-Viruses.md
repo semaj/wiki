@@ -18,6 +18,7 @@ This article describes both simple and complex metamorphic techniques.
 * **Entry Point Obscuring** - Running the virus code at the middle or end of the host binary execution rather than the start.
 
 ## Overview
+
 1. Viruses commonly appended themselves to the end of executable files, then changed the entry point to point at the virus code. 
 1. Form analysis solved this, but virus detection is undecidable.
 1. Viruses then encrypted their code, added a decryption routine, and changed the entry point to the decryption routine.
@@ -47,6 +48,7 @@ Innocuous programs will usually sequentially test several conditions, and depend
 
 #### PRIDE
 Heuristics will often check for the following routine:
+
 1. Address of buffer inside data section
 1. A *sequential* read of the buffer as well as a creation of a new buffer (the decrypted code)
 1. Control given to the new buffer

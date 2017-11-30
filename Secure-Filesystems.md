@@ -35,7 +35,7 @@ Bitlocker uses the [[TPM|Trusted-Hardware]] on the laptop. The Bitlocker encrypt
 * The attacker cannot control or predict any aspect of the plaintext changes if he modifies or replaces the ciphertext of a sector. **We don't want the attacker to be able to just switch certain sectors. We stop this by using a different IV for each sector, dependent upon the sector number**
 
 ### Execution
-Bitlocker uses [[AES in CBC mode|Encryption]]. This is a block cipher and operates on the given sectors. Unfortunately, AES-CBC suffers from poor *diffusion* in the decryption (each bit in the ciphertext should depend on several parts of the key). If the attacker introduces a change in the ciphertext block *i*, the plaintext block *i* is randomized but plaintext block *i+1* is changed according to the original change. In other words, the attacker can flip arbitrary bits in one block at the cost of randomizing another. 
+Bitlocker uses [[AES in CBC mode|Cryptography]]. This is a block cipher and operates on the given sectors. Unfortunately, AES-CBC suffers from poor *diffusion* in the decryption (each bit in the ciphertext should depend on several parts of the key). If the attacker introduces a change in the ciphertext block *i*, the plaintext block *i* is randomized but plaintext block *i+1* is changed according to the original change. In other words, the attacker can flip arbitrary bits in one block at the cost of randomizing another. 
 
 Imagine `Pi` and `Ci` are just one bit wide. 
 

@@ -38,7 +38,7 @@ $$
 Y -> g^y mod p -> X
 $$
 
-Both calculate ephemeral $g^(xy)$, the key.
+Both calculate ephemeral $g^{xy}$, the key.
 
 ## Goals
 **Tor seeks to frustrate attackers from linking communication partners, or from linking multiple communications to or from a single user.**

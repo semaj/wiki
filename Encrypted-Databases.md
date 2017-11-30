@@ -37,7 +37,7 @@ Processing a query looks like this:
 1. Application issues query. Proxy anonymizes each table, column name using secret key `MK`. Encrypts each constant in query with encryption scheme best suited for operation (see later). **Note that this means in threat 2 the table/column names are visible once queries are received.**
 1. Proxy checks to see if encryption layers on affected columns need to be updated. If so, proxy issues an update to decrypt these columns. 
 1. Proxy invokes encrypted query (the data is encrypted) on DBMS server, occasionally invoking UDFs.
-1. DBMS server returns encrypted query result, which proxy decrypts and returns the application. **If the attacker can see queries and results, and these are in the clear, this thteat model is kind of weak...**
+1. DBMS server returns encrypted query result, which proxy decrypts and returns the application. **If the attacker can see queries and results, and these are in the clear, this threat model is kind of weak...**
 
 If a table looks like this:
 
@@ -95,7 +95,7 @@ The developer defines
 * **principal types** - user, group, etc
 * **principal** - instance of a principal type, like principal 5 of type user
 
-*External* principals correspond to end users who explicitl authenticate themselves to the application using a password. *Internal* principals are internal, database-only entities that obtain privileges through the delegation from external principals. Each principal is associated with a secret, randomly chosen key. If principal B speaks for principal A, A's key is encrypted using B's key and stored in `access_keys` table in the database. This allows principal B to decrypt principal A. 
+*External* principals correspond to end users who explicitly authenticate themselves to the application using a password. *Internal* principals are internal, database-only entities that obtain privileges through the delegation from external principals. Each principal is associated with a secret, randomly chosen key. If principal B speaks for principal A, A's key is encrypted using B's key and stored in `access_keys` table in the database. This allows principal B to decrypt principal A. 
 
 For example, if physical user speaks for a group, the group's key is encrypted via the physical user. **This is desirable since all columns must be encrypted separately for each key that can access the columns.** CryptDB stores the user's randomly generated key encrypted by the user's password.
 

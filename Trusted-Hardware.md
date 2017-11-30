@@ -115,7 +115,7 @@ The enclave relys on the untrusted OS to do things like
 ## Creating an Enclave
 
 1. The untrusted host process invokes the `ECREATE` instruction to initialize SGX metadata for new enclave.
-  * Starting virtual address and lendth of enclave's code and data
+  * Starting virtual address and length of enclave's code and data
   * Hash of the enclave's code and data (hash value is unset at first)
 1. Host process copies the enclave's code and data from regular untrusted host memory into the PRM region for the enclave
   * `EADD` instruction specifies source virtual address in untrusted host process and the destination virtual address in the enclave's PRM. Works at the granularity of pages. Copies memory page to enclave's PRM. 
@@ -142,6 +142,6 @@ To enter the enclave code, untrusted host invokes the `EENTER` instruction.
 ## SGX Remote Attestation
 
 * Client sends $g^c mod p$
-* Server sends certificate, ($g^client mod p, g^server mod p, hash(initialEnclaveState)$)signed by SGX private key
+* Server sends certificate, ($g^{client} mod p, g^{server} mod p, hash(initialEnclaveState)$)signed by SGX private key
 * Client sends some secret data encrypted by DH key
 * Server sends back result of computation encrypted by DH key

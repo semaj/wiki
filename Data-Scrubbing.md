@@ -7,7 +7,7 @@ Operating systems, word processor, web browsers, and other common pieces of soft
 
 * **Dead Store** A write that is never read by subsequent code. Gcc will try to remove memsets that appear to represent dead stores.
 * **Ideal Lifetime** - the period of time that data is *in use*, from the first write after allocation to the last read before deallocation
-* **Natural Lifetime** - the window of time where attackers can retrieve useful information from an allocation, even after it has been freed. This spans from the first write to the first overwrite (of the complete data). This is a problme because an attacker could possibly grep through pages files while their in memory, or even after they've been paged to disk.
+* **Natural Lifetime** - the window of time where attackers can retrieve useful information from an allocation, even after it has been freed. This spans from the first write to the first overwrite (of the complete data). This is a problem because an attacker could possibly grep through pages files while their in memory, or even after they've been paged to disk.
 * **Secure Deallocation Lifetime** - as per the authors' system, this is the time between the first write and its deallocation (whether via a managed runtime or via a manual call to `free`). This lies between the first two lifetimes, and is the best the authors think they can achieve.
 * **Holes** - Many might say that things will get overwritten eventually, but unfortunately many times compilers and applications allocate much more data than is actually used (on top of possibly sensitive data). This empty space is known as a 'hole', and it leaves sensitive data around. Overwriting is necessary.
 
